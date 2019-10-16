@@ -1,0 +1,98 @@
+---
+title: "usage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(saferds)
+```
+
+## Define the Problem 
+We aim to estimate the changes in ridership from a college safe ride progam from the first 8 weeks of FY14-FY19 to the first 8 weeks of FY20. 
+
+## Define the Model
+
+
+
+\[
+\begin{align*}
+    Y & \sim \text{Poisson}(\mu_0 e^{-X\beta}) \\
+    \beta & \sim \mathcal{N}(\mu, \tau^2\boldsymbol{\Sigma}) \\
+    \boldsymbol{\Sigma} & = (X^TX)^{-1} \\
+    \mu_0 & = \log\left(\frac{1}{n}\sum_{i=1}^n Y_i\right)
+\end{align*}\]
+
+
+Where, 
+
+* $\tau^2$ is a constant
+
+* $\mu$ is a vector 
+
+
+We first set up the design matrix and response variable from the data: 
+
+```{r}
+XMat <- model.matrix(~ all_data_sim$Week + all_data_sim$Day + all_data_sim$Week*all_data_sim$Day)
+
+Y <- all_data_sim$Rides
+```
+
+## Define the Variables 
+
+Next, we set our parameters: 
+
+* tau2 controls the dependence from where we draw our sample from in the sampler. Where $\Sigma$ is our covariance matrix, we multiply $\tau^2\Sigma$ to get our dependence structure. The parameter is more closely definied in the Outline of the Sampler
+
+* mu controls the mean from wehere we draw our sample from in the sample. The paramenter is more closely defined in the Outline of the Sampler. 
+
+* logmu0 is defined as $\log\left(\frac{1}{n}\sum_{i=1}^n Y_i\right)$. This is used to center our data. 
+
+* S is the number of iterations we run our sampler 
+
+
+```{r}
+tau2  <- 1
+mu=matrix(rep(0,ncol(XMat)))
+logmu0 <-log(mean(Y))
+S=1000
+```
+
+## Outline the Sampler 
+
+1. Choose ellipse: $\textbf{v} \sim N(\mu, \tau^2 \Sigma)$
+2. Calculate the log likelihood threshold where L is the log likelihood function
+  + $u \sim \text{Uniform}[0,1]$
+  + $\log(y) = \log(L(\textbf{f})) + \log(u)$ 
+3. Calculate and initial $\theta$ and interval
+  + $\theta \sim \text{Uniform}[$[\theta_{min}, \theta_{max} ] \leftarrow [\theta -2\pi, \theta]$
+4. $\textbf{f'} \leftarrow \textbf{f}\cos\theta + \textbf{v}\sin\theta$
+5. if $\log(\textbf{f'}) > \log(y)$ then: 
+  + Accept and return \textbf{f'}
+  + else: Shrink bracket and try new point:
+    + if $\theta <0$ then: $\theta_{min} \leftarrow \theta$, 
+    + else: $\theta_{max} \leftarrow \theta$
+    + $\theta \sim \text{Uniform}[\theta_{min}, \theta_{max}]$
+    + Repeat from step 4 S times 
+
+
+## Describe the input of the function 
+
+
+
+## Describe the ouput of the function 
+
+
+
+

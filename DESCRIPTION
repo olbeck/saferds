@@ -1,0 +1,15 @@
+Package: saferds
+Title: Bayesian Poisson Fixed Effects Regression Model
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Olivia",
+           family = "Beck",
+           role = c("aut", "cre"),
+           email = "oliviabeck80920@gmail.com")
+Description: This package estimates beta using bayesian poisson regression with fixed effects and eliptical slice sampling. 
+License: What license it uses
+Depends: R (>= 2.10)
+Imports: MASS (>= 7.3.0)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
