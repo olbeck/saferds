@@ -6,10 +6,15 @@ Authors@R:
            family = "Beck",
            role = c("aut", "cre"),
            email = "oliviabeck80920@gmail.com")
-Description: This package estimates beta using bayesian poisson regression with fixed effects and eliptical slice sampling. 
-License: What license it uses
+Description: A bayesian poisoon regression model with fiexed effects and elipitical slice samping. Originially designed to review college safe ride programs.  
+License: GPL-3
 Depends: R (>= 2.10)
 Imports: MASS (>= 7.3.0)
-Encoding: UTF-8
 LazyData: true
+url: https://github.com/Olbeck80920/saferds
+Encoding: UTF-8
 RoxygenNote: 6.1.1
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
