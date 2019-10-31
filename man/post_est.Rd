@@ -13,7 +13,7 @@ post_est(XMat, Y, mu, tau2, logmu0, S, depend = TRUE)
 
 \item{mu}{Vector of mean used in drawing v (n-by-1)}
 
-\item{tau2}{Variance tau^2 used to control variance of the distribution that v is drawn from}
+\item{tau2}{Used to control variance of the distribution that samples are drawn from the the sampler}
 
 \item{logmu0}{log(mu_0) Log of the mean of Y, used to center the data}
 
@@ -22,7 +22,7 @@ post_est(XMat, Y, mu, tau2, logmu0, S, depend = TRUE)
 \item{depend}{logicial, is there dependence in the covariance sturcture of the prior distribution?}
 }
 \value{
-The estimated beta (n-by-1 matrix) for my specific model
+The estimated posterior distribuion (n-by-1 matrix). The output is the average of the last S/2 draws from the posterior distribution.
 }
 \description{
 Run the Model

@@ -13,6 +13,8 @@ ess(XMat, Y, Sigma, beta, mu, tau2, logmu0, depend = TRUE)
 
 \item{Sigma}{corrolation matrix of the prior distribution}
 
+\item{beta}{current estimate of posterior distrubution}
+
 \item{mu}{Vector of mean used in drawing v (n-by-1)}
 
 \item{tau2}{Variance tau^2 used to control variance of the distribution that v is drawn from}

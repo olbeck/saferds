@@ -1,5 +1,6 @@
 #' All Nightly Operations Data Simulated
-#' Simulated data points from first 8 weeks of fy14-fy19
+#'
+#' Simulated data points from first 8 weeks of FY14-FY19
 #'
 #' @format a data frame
 #' \describe{
@@ -10,4 +11,3 @@
 #'   }
 #' @source This data is simulated to represent the data used 
 "all_data_sim"
-

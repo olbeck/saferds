@@ -7,7 +7,7 @@
 #' @param logmu0 log(mu_0) Log of the mean of Y, used to center the data
 #' @param S the number of iterations
 #' @param depend logicial, is there dependence in the covariance sturcture of the prior distribution?
-#' @return The estimated beta (n-by-1 matrix) for my specific model
+#' @return The estimated posterior distribuion (n-by-1 matrix). The output is the average of the last S/2 draws from the posterior distribution.  
 #' @importFrom MASS mvrnorm
 post_est <- function(XMat, Y, mu, tau2, logmu0, S, depend =TRUE){
   #need MASS library
@@ -52,5 +52,5 @@ post_est <- function(XMat, Y, mu, tau2, logmu0, S, depend =TRUE){
   
   
   return_beta <- colMeans(beta_keep[(S/2+1):S,])
-  return(list(return_beta, beta_keep))
+  return(return_beta)
 } #end function

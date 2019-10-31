@@ -3,6 +3,7 @@
 #' @param XMat Matrix of input data (n-by-m)
 #' @param Y Matrix of out put data (n-by-1)
 #' @param Sigma corrolation matrix of the prior distribution
+#' @param beta current estimate of posterior distrubution
 #' @param mu Vector of mean used in drawing v (n-by-1)
 #' @param tau2 Variance tau^2 used to control variance of the distribution that v is drawn from
 #' @param logmu0 log(mu_0) Log of the mean of Y, used to center the data

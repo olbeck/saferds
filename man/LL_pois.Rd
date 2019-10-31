@@ -2,22 +2,22 @@
 % Please edit documentation in R/LL_pois.R
 \name{LL_pois}
 \alias{LL_pois}
-\title{Log Likilhood for Poisson}
+\title{Log Likilhood for Poisson Distribution}
 \usage{
 LL_pois(XMat, Beta, logmu0, Y)
 }
 \arguments{
 \item{XMat}{Matrix of input data (n-by-m)}
 
-\item{Beta}{current estimate of beta}
+\item{Beta}{current estimate of posterior distribution}
 
 \item{logmu0}{log(mu_0) Log of the mean of Y, used to center the data}
 
-\item{Y}{Matrix of out put data (n-by-1)}
+\item{Y}{Matrix of response data (n-by-1)}
 }
 \value{
 Log Liklihood
 }
 \description{
-Log Likilhood for Poisson
+Log Likilhood for Poisson Distribution
 }
