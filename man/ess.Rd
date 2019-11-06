@@ -9,22 +9,22 @@ ess(XMat, Y, Sigma, beta, mu, tau2, logmu0, depend = TRUE)
 \arguments{
 \item{XMat}{Matrix of input data (n-by-m)}
 
-\item{Y}{Matrix of out put data (n-by-1)}
+\item{Y}{Matrix of response data (n-by-1)}
 
 \item{Sigma}{corrolation matrix of the prior distribution}
 
 \item{beta}{current estimate of posterior distrubution}
 
-\item{mu}{Vector of mean used in drawing v (n-by-1)}
+\item{mu}{Vector of means defined in the prior distribution (n-by-1)}
 
-\item{tau2}{Variance tau^2 used to control variance of the distribution that v is drawn from}
+\item{tau2}{Number used to control the Covariance matrix in the prior distribution.}
 
-\item{logmu0}{log(mu_0) Log of the mean of Y, used to center the data}
+\item{logmu0}{log(mu_0) Log of the mean of Y. Used to center the data}
 
 \item{depend}{logicial, is there dependence in the covariance sturcture of the prior distribution?}
 }
 \value{
-The estimated beta (n-by-1 matrix)
+The draw from the posterior distribution (n-by-1 matrix)
 }
 \description{
 Elipitical Slice Sampler

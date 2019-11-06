@@ -2,28 +2,32 @@
 % Please edit documentation in R/post_est.R
 \name{post_est}
 \alias{post_est}
-\title{Run the Model}
+\title{Estimate the Posterior Distribution}
 \usage{
 post_est(XMat, Y, mu, tau2, logmu0, S, depend = TRUE)
 }
 \arguments{
 \item{XMat}{Matrix of input data (n-by-m)}
 
-\item{Y}{Matrix of out put data (n-by-1)}
+\item{Y}{Matrix of response data (n-by-1)}
 
-\item{mu}{Vector of mean used in drawing v (n-by-1)}
+\item{mu}{Vector of means defined in the prior distribution (n-by-1)}
 
-\item{tau2}{Used to control variance of the distribution that samples are drawn from the the sampler}
+\item{tau2}{Number used to control the Covariance matrix in the prior distribution.}
 
-\item{logmu0}{log(mu_0) Log of the mean of Y, used to center the data}
+\item{logmu0}{log(mu_0) Log of the mean of Y. Used to center the data}
 
 \item{S}{the number of iterations}
 
 \item{depend}{logicial, is there dependence in the covariance sturcture of the prior distribution?}
 }
 \value{
-The estimated posterior distribuion (n-by-1 matrix). The output is the average of the last S/2 draws from the posterior distribution.
+A list with 
+  \enumerate{
+  \item 1) The estimated posterior distribution with the first S/2 esimates burned
+  \item 2) The estimated standard deviation of the posterior distribution
+  \item 3) All elements in the last S/2 draws from the posterior distribution. A S/2-by-m matrix where each row is one draw from the posterior distribution.}
 }
 \description{
-Run the Model
+Estimate the Posterior Distribution
 }

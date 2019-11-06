@@ -1,15 +1,17 @@
 #' Elipitical Slice Sampler
 #'
 #' @param XMat Matrix of input data (n-by-m)
-#' @param Y Matrix of out put data (n-by-1)
+#' @param Y Matrix of response data (n-by-1)
 #' @param Sigma corrolation matrix of the prior distribution
 #' @param beta current estimate of posterior distrubution
-#' @param mu Vector of mean used in drawing v (n-by-1)
-#' @param tau2 Variance tau^2 used to control variance of the distribution that v is drawn from
-#' @param logmu0 log(mu_0) Log of the mean of Y, used to center the data
+#' @param mu Vector of means defined in the prior distribution (n-by-1)
+#' @param tau2 Number used to control the Covariance matrix in the prior distribution.
+#' @param logmu0 log(mu_0) Log of the mean of Y. Used to center the data
 #' @param depend logicial, is there dependence in the covariance sturcture of the prior distribution?
-#' @return The estimated beta (n-by-1 matrix)
+#' @return The draw from the posterior distribution (n-by-1 matrix)
 #' @importFrom MASS mvrnorm
+#' @importFrom stats rnorm
+#' @importFrom stats runif
 ess <-function(XMat, Y, Sigma, beta, mu, tau2, logmu0, depend = TRUE) {
   
   p <- ncol(XMat)

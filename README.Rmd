@@ -35,31 +35,25 @@ devtools::install_github("Olbeck80920/saferds")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+The following is a basic example of using the main function `post_est`. We first start by creating a design matrix  from our data and set our paramenters. For detailed information on setting parameters, see Usage vignette.  
 
 ```{r example}
 library(saferds)
+set.seed(700)
 ## basic example code
+XMat <- model.matrix(~ all_data_sim$Week + I(all_data_sim$FY=="FY20"))
+Y <- all_data_sim$Rides
 
-#Transform data into design matrix: 
-XMat <-  model.matrix(~ all_data_sim$Week + all_data_sim$Day +      all_data_sim$Week*all_data_sim$Day)
-
-
-
+mu=matrix(rep(0,ncol(XMat)))
+tau2  <- 1
+logmu0 <-log(mean(Y))
+S=1000
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+We then run and calculate the estimate from the posterior distribution:
 
-```{r cars}
-summary(cars)
+```{r}
+Beta <- post_est(XMat, Y, mu, tau2, logmu0, S, depend=FALSE)
+exp(Beta)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!

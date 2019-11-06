@@ -15,83 +15,88 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+set.seed(400)
 library(saferds)
 ```
 
 ## Define the Problem 
-We aim to estimate the changes in ridership from a college safe ride progam from the first 8 weeks of FY14-FY19 to the first 8 weeks of FY20. 
+We aim to estimate the changes in ridership from a college safe ride progam from the first 8 weeks of Fiscal Year 2014 to Fiscal Year 2019 to the first 8 weeks of Fiscal Year 20. We will use the data set `all_data_sim` and the function `post_est`. 
 
 ## Define the Model
 
-
-
-\[
-\begin{align*}
+\[\begin{align*}
     Y & \sim \text{Poisson}(\mu_0 e^{-X\beta}) \\
     \beta & \sim \mathcal{N}(\mu, \tau^2\boldsymbol{\Sigma}) \\
-    \boldsymbol{\Sigma} & = (X^TX)^{-1} \\
     \mu_0 & = \log\left(\frac{1}{n}\sum_{i=1}^n Y_i\right)
 \end{align*}\]
 
 
 Where, 
 
+* $\mu_0 = \frac{1}{n}\sum_1^n Y_i
+
 * $\tau^2$ is a constant
 
 * $\mu$ is a vector 
 
+* When the data are independent, $\boldsymbol{\Sigma} = \boldsymbol{I}$
 
-We first set up the design matrix and response variable from the data: 
+* When the data are dependent, $\boldsymbol{\Sigma} = (X^TX)^{-1}$
+
+
+We first set up the design matrix and response variable from the data. We are interested in the effects of Week, Day, and the interaction between the two on the output of rides. We also want to include an indicator for the Fiscal Year 2020: 
 
 ```{r}
-XMat <- model.matrix(~ all_data_sim$Week + all_data_sim$Day + all_data_sim$Week*all_data_sim$Day)
+XMat <- model.matrix(~ all_data_sim$Week + all_data_sim$Day + I(all_data_sim$FY=="FY20") + all_data_sim$Week*all_data_sim$Day)
 
 Y <- all_data_sim$Rides
 ```
 
 ## Define the Variables 
 
-Next, we set our parameters: 
+Next, we set our parameters according to our model. In this case we define: 
 
-* tau2 controls the dependence from where we draw our sample from in the sampler. Where $\Sigma$ is our covariance matrix, we multiply $\tau^2\Sigma$ to get our dependence structure. The parameter is more closely definied in the Outline of the Sampler
+* $\tau^2 = 1$,
 
-* mu controls the mean from wehere we draw our sample from in the sample. The paramenter is more closely defined in the Outline of the Sampler. 
+* $\mu = \boldsymbol{0}$,
 
-* logmu0 is defined as $\log\left(\frac{1}{n}\sum_{i=1}^n Y_i\right)$. This is used to center our data. 
+* $\log(\mu_0)$ is defined as $\log{\mu_0}$, and 
 
-* S is the number of iterations we run our sampler 
+* S=1000 where S is the number of samples we draw from the posterior distribution. 
+
+For this model we will have no dependence. 
 
 
 ```{r}
 tau2  <- 1
-mu=matrix(rep(0,ncol(XMat)))
+mu <- matrix(rep(0,ncol(XMat)))
 logmu0 <-log(mean(Y))
-S=1000
+S <- 1000
 ```
 
-## Outline the Sampler 
 
-1. Choose ellipse: $\textbf{v} \sim N(\mu, \tau^2 \Sigma)$
-2. Calculate the log likelihood threshold where L is the log likelihood function
-  + $u \sim \text{Uniform}[0,1]$
-  + $\log(y) = \log(L(\textbf{f})) + \log(u)$ 
-3. Calculate and initial $\theta$ and interval
-  + $\theta \sim \text{Uniform}[$[\theta_{min}, \theta_{max} ] \leftarrow [\theta -2\pi, \theta]$
-4. $\textbf{f'} \leftarrow \textbf{f}\cos\theta + \textbf{v}\sin\theta$
-5. if $\log(\textbf{f'}) > \log(y)$ then: 
-  + Accept and return \textbf{f'}
-  + else: Shrink bracket and try new point:
-    + if $\theta <0$ then: $\theta_{min} \leftarrow \theta$, 
-    + else: $\theta_{max} \leftarrow \theta$
-    + $\theta \sim \text{Uniform}[\theta_{min}, \theta_{max}]$
-    + Repeat from step 4 S times 
+## Run the Estimator and Report Estimate
 
+We can now run our estimator and calculate our log-liklihood estimates: 
 
-## Describe the input of the function 
+```{r}
+Est <- post_est(XMat, Y, mu, tau2, logmu0, S, depend=FALSE)
+```
 
+Because we are interested in the change in FY20 from the previous years, we want to know the likilhood, not the log-liklihood. We expoenetiate the calulated log likihood and find the appropriate confidence intervals. Note column 11 in our design matrix is the indicator for Fiscal Year 2020: This is the variable we are interested in. 
 
+ 
+```{r}
+colnames(XMat)[11]
 
-## Describe the ouput of the function 
+Likeli_Est <- mean(exp(Est[[3]][,11]))
+CI_Est <- quantile(exp(Est[[3]][,11]),c(0.025,0.975))
+
+Likeli_Est
+CI_Est
+```
+We estimate that our likelihood is 1.33 with a 95% confidence interval of (1.14, 1.53) We conclude that it is plausible that there was an increase in ridership in Fiscal Year 2020.  
+
 
 
 

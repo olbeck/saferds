@@ -25,6 +25,6 @@ all_data_sim <- data.frame("Day" = Day,
                     "Rides" = SimDat)
 all_data_sim$Week <- as.factor(all_data_sim$Week)
 
-all_data_sim$Rides[all_data_sim$FY == "FY20"]= all_data_sim$Rides[all_data_sim$FY == "FY20"]+50
+all_data_sim$Rides[all_data_sim$FY == "FY20"]= all_data_sim$Rides[all_data_sim$FY == "FY20"]+150
 
 usethis::use_data("all_data_sim", overwrite = TRUE)
