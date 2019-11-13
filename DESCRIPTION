@@ -6,7 +6,7 @@ Authors@R:
            family = "Beck",
            role = c("aut", "cre"),
            email = "oliviabeck80920@gmail.com")
-Description: A bayesian poisoon regression model with fiexed effects and elipitical slice samping. Originially designed to review college safe ride programs.  
+Description: A bayesian poisson regression model with fixed effects and elipitical slice sampling. Originially designed to review college safe ride programs.  
 License: GPL-3
 Depends: R (>= 2.10)
 Imports: MASS (>= 7.3.0)
